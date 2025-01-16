@@ -22,4 +22,9 @@ class Image extends Model
     {
         return $this->morphTo();
     }
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
 }

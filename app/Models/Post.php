@@ -25,4 +25,9 @@ class Post extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
 }

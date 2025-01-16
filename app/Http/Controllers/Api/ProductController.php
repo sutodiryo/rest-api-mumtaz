@@ -18,10 +18,10 @@ class ProductController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required',
-            'price'     => 'required',
-            'unit'   => 'required',
-            'quantity'   => 'required',
+            'name' => 'required',
+            'price' => 'required',
+            'unit' => 'required|in:pcs,kilogram,mililiter,liter,gram,ton',
+            'quantity' => 'required',
         ]);
 
         $product = new ProductService();
@@ -80,4 +80,3 @@ class ProductController
         return $product->deleteProduct($request->product);
     }
 }
-

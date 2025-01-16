@@ -24,7 +24,7 @@ return new class extends Migration
                 ->on('users')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            $table->integer("imageable_id");
+            $table->string("imageable_id");
             $table->string("imageable_type");
             $table->timestamps();
         });

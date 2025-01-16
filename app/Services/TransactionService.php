@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\SuccessfulTransaction;
 use App\Http\Resources\TransactionResource;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -69,8 +70,10 @@ class TransactionService
 
             $transaction->total_amount = array_sum($total_amounts);
             $transaction->save();
-            
+
             DB::commit();
+            
+            event(new SuccessfulTransaction($transaction));
 
             return new TransactionResource(true, 'Product created!', $transaction);
         }

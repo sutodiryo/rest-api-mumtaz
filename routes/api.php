@@ -37,9 +37,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Transaction
     Route::apiResource('/transaction', TransactionController::class);
-
-    Route::prefix('transaction')->as('transaction.')->group(function () {
-        Route::post('/tags/{id}', [TransactionController::class, 'tags'])->name('tags');
-        Route::post('/images/{id}', [TransactionController::class, 'images'])->name('images');
-    });
 });

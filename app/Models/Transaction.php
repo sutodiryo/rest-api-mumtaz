@@ -19,7 +19,7 @@ class Transaction extends Model
         'created_by_id',
     ];
 
-    public function item()
+    public function items()
     {
         return $this->hasMany(TransactionItem::class, 'transaction_id');
     }

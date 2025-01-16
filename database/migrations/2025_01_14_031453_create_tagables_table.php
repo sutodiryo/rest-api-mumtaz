@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tagables', function (Blueprint $table) {
-            $table->foreignId('tag_id')->constrained();
-            $table->morphs('taggable');
+            $table->foreignUuid('tag_id')->constrained();
+            $table->uuidMorphs('tagable');
         });
     }
 

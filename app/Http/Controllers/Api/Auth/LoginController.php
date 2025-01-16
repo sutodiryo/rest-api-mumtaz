@@ -27,7 +27,6 @@ class LoginController
                 'password' => ['Password yang Anda masukan tidak sesuai.']
             ]);
         }
-        // $user = Auth::user();
 
         $token = $user->createToken($user->email);
 

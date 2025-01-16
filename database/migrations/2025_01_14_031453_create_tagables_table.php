@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tagables', function (Blueprint $table) {
-            $table->foreignUuid('tag_id')->constrained();
+            $table->foreignUuid('tag_id')
+                ->nullable()
+                ->references('id')
+                ->on('tags')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
             $table->uuidMorphs('tagable');
         });
     }

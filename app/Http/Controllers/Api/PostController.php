@@ -29,7 +29,6 @@ class PostController extends Controller
         return $post->createPost($validator);
     }
 
-
     public function tags(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -41,13 +40,42 @@ class PostController extends Controller
         return $post->addTags($request->id, $validator);
     }
 
-    public function show(Request $request) {
+    public function images(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'images'     => 'required',
+        ]);
 
+        $post = new PostService();
+
+        return $post->addImages($request->id, $validator);
+    }
+
+    public function show(Request $request)
+    {
         $post = new PostService();
 
         return $post->showPost($request->post);
     }
-    public function edit() {}
 
-    public function delete() {}
+    public function update(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'slug'     => 'required',
+            'title'     => 'required',
+            'content'   => 'nullable',
+        ]);
+
+        $post = new PostService();
+
+        return $post->updatePost($request->post, $validator);
+    }
+
+    public function destroy(Request $request)
+    {
+        $post = new PostService();
+
+        return $post->deletePost($request->post);
+    }
 }

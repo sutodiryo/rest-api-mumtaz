@@ -23,7 +23,6 @@ class PostService
 
     public function createPost($request)
     {
-
         if ($request->fails()) {
 
             return new PostResource(false, $request->errors(), null);
@@ -100,7 +99,6 @@ class PostService
                     ]);
 
                     $post->images()->save($created_image);
-                    
                 }
             }
 
@@ -112,17 +110,60 @@ class PostService
 
     public function showPost($post_id)
     {
-        if (!$post_id) {
+        $post = Post::with('tags', 'images')->where('id', $post_id)->first();
+
+        if (!$post) {
 
             return new PostResource(false, 'Post not found', null);
         } else {
-
-            $post = Post::with('tags', 'images')->where('id', $post_id)->first();
 
             return new PostResource(true, 'Post find succesfully!', $post);
         }
     }
 
+    public function updatePost($post_id, $request)
+    {
+        if ($request->fails()) {
+
+            return new PostResource(false, $request->errors(), null);
+        } else {
+
+            DB::beginTransaction();
+
+            $post = Post::findOrFail($post_id);
+
+            $post->slug = $request->validated()['slug'];
+            $post->title = $request->validated()['title'];
+            $post->content = $request->validated()['content'];
+            $post->save();
+
+            DB::commit();
+
+            return new PostResource(true, 'Post updated!', $post);
+        }
+    }
+
+    public function deletePost($post_id)
+    {
+        $post = Post::findOrFail($post_id);
+
+        if (!$post) {
+
+            return new PostResource(false, 'Post not found', null);
+        } else {
+
+            DB::beginTransaction();
+            $post->tags()->delete();
+            $post->Images()->delete();
+            $post->delete();
+
+            DB::commit();
+
+            return new PostResource(true, 'Post deleted succesfully!', $post);
+        }
+    }
+
+    // Additional
     function processImage($base64_img, $filename)
     {
         $imageResize = ImageProcessing::make(base64_decode($base64_img))->resize(1280, null, function ($constraint) {
